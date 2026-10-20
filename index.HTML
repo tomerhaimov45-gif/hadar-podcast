@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>חמש דקות של שקט מ-ice</title>
+    <style>
+        :root {
+            --bg-color: #0b0b0f;
+            --card-bg: #14141c;
+            --card-border: rgba(155, 77, 202, 0.2);
+            --card-border-hover: rgba(155, 77, 202, 0.6);
+            --accent-purple: #9b4dca; /* סגול מטאלי מרהיב */
+            --accent-purple-glow: rgba(155, 77, 202, 0.4);
+            --text-main: #ffffff;
+            --text-muted: #9494a0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: radial-gradient(circle at 50% 0%, #1a102f 0%, var(--bg-color) 70%);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 24px 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 420px;
+            text-align: center;
+        }
+
+        .logo-container {
+            width: 100%;
+            margin-bottom: 32px;
+            position: relative;
+        }
+
+        .logo-img {
+            width: 100%;
+            border-radius: 16px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.7), 0 0 20px var(--accent-purple-glow);
+            display: block;
+            border: 1px solid rgba(155, 77, 202, 0.3);
+        }
+
+        .episode-card {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            padding: 18px 22px;
+            margin-bottom: 18px;
+            text-align: right;
+            border: 1px solid var(--card-border);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .episode-card:hover {
+            border-color: var(--card-border-hover);
+            box-shadow: 0 8px 30px var(--accent-purple-glow);
+        }
+
+        .episode-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+        }
+
+        .episode-title {
+            font-size: 17px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            color: var(--text-main);
+        }
+
+        /* כפתור הורדה בעיצוב אייקון חץ נקי */
+        .download-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-muted);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+
+        .download-btn:hover {
+            background: var(--accent-purple);
+            color: white;
+            border-color: var(--accent-purple);
+            box-shadow: 0 0 10px var(--accent-purple-glow);
+        }
+
+        /* נגן מותאם אישית חדשני ומחשמל */
+        .custom-player {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: rgba(0, 0, 0, 0.25);
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .play-btn {
+            background: linear-gradient(135deg, #b060f0, var(--accent-purple));
+            color: white;
+            border: none;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+            box-shadow: 0 4px 15px var(--accent-purple-glow);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .play-btn:hover {
+            transform: scale(1.08);
+            box-shadow: 0 6px 20px var(--accent-purple-glow);
+        }
+
+        .progress-container {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background-color: #22222f;
+            border-radius: 4px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-filled {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-purple), #d480ff);
+            width: 0%;
+            border-radius: 4px;
+            box-shadow: 0 0 8px var(--accent-purple-glow);
+            transition: width 0.1s linear;
+        }
+
+        .time-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        footer {
+            margin-top: 40px;
+            color: var(--text-muted);
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- הלוגו המקורי של הפודקאסט -->
+        <div class="logo-container">
+            <img src="logo.jpg" alt="חמש דקות של שקט מ-ice" class="logo-img">
+        </div>
+
+        <!-- פרק 1 -->
+        <div class="episode-card" id="ep1">
+            <div class="episode-header">
+                <div class="episode-title">פרק 1</div>
+                <a href="audio/episode1.mp3" download class="download-btn" title="הורד פרק">⬇</a>
+            </div>
+            <div class="custom-player">
+                <button class="play-btn" onclick="togglePlay(1)">▶</button>
+                <div class="progress-container">
+                    <div class="progress-bar" onclick="seekAudio(event, 1)">
+                        <div class="progress-filled" id="progress-1"></div>
+                    </div>
+                    <div class="time-info">
+                        <span id="current-time-1">0:00</span>
+                        <span id="duration-1">0:00</span>
+                    </div>
+                </div>
+            </div>
+            <audio id="audio-1" src="audio/episode1.mp3" preload="metadata"></audio>
+        </div>
+
+        <!-- פרק 2 -->
+        <div class="episode-card" id="ep2">
+            <div class="episode-header">
+                <div class="episode-title">פרק 2</div>
+                <a href="audio/episode2.mp3" download class="download-btn" title="הורד פרק">⬇</a>
+            </div>
+            <div class="custom-player">
+                <button class="play-btn" onclick="togglePlay(2)">▶</button>
+                <div class="progress-container">
+                    <div class="progress-bar" onclick="seekAudio(event, 2)">
+                        <div class="progress-filled" id="progress-2"></div>
+                    </div>
+                    <div class="time-info">
+                        <span id="current-time-2">0:00</span>
+                        <span id="duration-2">0:00</span>
+                    </div>
+                </div>
+            </div>
+            <audio id="audio-2" src="audio/episode2.mp3" preload="metadata"></audio>
+        </div>
+
+        <!-- פרק 3 -->
+        <div class="episode-card" id="ep3">
+            <div class="episode-header">
+                <div class="episode-title">פרק 3</div>
+                <a href="audio/episode3.mp3" download class="download-btn" title="הורד פרק">⬇</a>
+            </div>
+            <div class="custom-player">
+                <button class="play-btn" onclick="togglePlay(3)">▶</button>
+                <div class="progress-container">
+                    <div class="progress-bar" onclick="seekAudio(event, 3)">
+                        <div class="progress-filled" id="progress-3"></div>
+                    </div>
+                    <div class="time-info">
+                        <span id="current-time-3">0:00</span>
+                        <span id="duration-3">0:00</span>
+                    </div>
+                </div>
+            </div>
+            <audio id="audio-3" src="audio/episode3.mp3" preload="metadata"></audio>
+        </div>
+
+        <footer>
+            מוקדש באהבה להדר. מזל טוב! ❤️
+        </footer>
+    </div>
+
+    <script>
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = Math.floor(seconds % 60);
+            return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
+        }
+
+        for (let i = 1; i <= 3; i++) {
+            const audio = document.getElementById(`audio-${i}`);
+            const progressFilled = document.getElementById(`progress-${i}`);
+            const currentTimeEl = document.getElementById(`current-time-${i}`);
+            const durationEl = document.getElementById(`duration-${i}`);
+
+            audio.addEventListener('loadedmetadata', () => {
+                durationEl.textContent = formatTime(audio.duration);
+            });
+
+            audio.addEventListener('timeupdate', () => {
+                if (audio.duration) {
+                    const percent = (audio.currentTime / audio.duration) * 100;
+                    progressFilled.style.width = `${percent}%`;
+                    currentTimeEl.textContent = formatTime(audio.currentTime);
+                }
+            });
+
+            audio.addEventListener('ended', () => {
+                const playBtn = document.querySelector(`#ep${i} .play-btn`);
+                playBtn.textContent = '▶';
+            });
+        }
+
+        function togglePlay(id) {
+            const audio = document.getElementById(`audio-${id}`);
+            const playBtn = document.querySelector(`#ep${id} .play-btn`);
+
+            for (let i = 1; i <= 3; i++) {
+                if (i !== id) {
+                    const otherAudio = document.getElementById(`audio-${i}`);
+                    const otherBtn = document.querySelector(`#ep${i} .play-btn`);
+                    otherAudio.pause();
+                    otherBtn.textContent = '▶';
+                }
+            }
+
+            if (audio.paused) {
+                audio.play();
+                playBtn.textContent = '⏸';
+            } else {
+                audio.pause();
+                playBtn.textContent = '▶';
+            }
+        }
+
+        function seekAudio(event, id) {
+            const audio = document.getElementById(`audio-${id}`);
+            const progressBar = event.currentTarget;
+            const clickX = event.offsetX;
+            const width = progressBar.clientWidth;
+            
+            if (audio.duration) {
+                audio.currentTime = (clickX / width) * audio.duration;
+            }
+        }
+    </script>
+</body>
+</html>
