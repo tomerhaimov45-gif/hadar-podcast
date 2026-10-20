@@ -56,12 +56,6 @@
             text-align: right;
             border: 1px solid var(--card-border);
             box-shadow: 0 8px 24px rgba(0,0,0,0.4);
-            transition: border-color 0.3s, box-shadow 0.3s;
-        }
-
-        .episode-card:hover {
-            border-color: var(--card-border-hover);
-            box-shadow: 0 8px 30px var(--accent-purple-glow);
         }
 
         .episode-header {
@@ -79,7 +73,6 @@
 
         .download-btn {
             -webkit-appearance: none;
-            -moz-appearance: none;
             appearance: none;
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -94,7 +87,6 @@
             text-decoration: none;
             font-size: 14px;
             outline: none;
-            transition: all 0.2s ease;
         }
 
         .download-btn:hover {
@@ -104,7 +96,6 @@
             box-shadow: 0 0 10px var(--accent-purple-glow);
         }
 
-        /* עיצוב אזור הנעילה היפהפה */
         .locked-message {
             background: rgba(0, 0, 0, 0.3);
             border: 1px dashed rgba(155, 77, 202, 0.4);
@@ -145,7 +136,6 @@
 
         .play-btn {
             -webkit-appearance: none;
-            -moz-appearance: none;
             appearance: none;
             background: linear-gradient(135deg, #b060f0, var(--accent-purple));
             color: white;
@@ -164,7 +154,6 @@
 
         .stop-btn {
             -webkit-appearance: none;
-            -moz-appearance: none;
             appearance: none;
             background: rgba(255, 255, 255, 0.06);
             color: var(--text-muted);
@@ -228,7 +217,6 @@
 <body>
 
     <div class="container">
-        <!-- הלוגו -->
         <div class="logo-container">
             <img src="logo.jpg" alt="חמש דקות של שקט מ-ice" class="logo-img">
         </div>
@@ -239,14 +227,10 @@
                 <div class="episode-title">פרק 1</div>
                 <a href="audio/פרק 1.mp3" download class="download-btn" id="dl-1" style="display: none;" title="הורד פרק">⬇</a>
             </div>
-            
-            <!-- הודעת נעילה -->
             <div id="locked-1" class="locked-message">
                 <span>🔒 הפרק נעול</span>
                 <span>נפתח בשעה <span class="time-badge">11:00</span></span>
             </div>
-
-            <!-- נגן (מוסתר בהתחלה) -->
             <div class="custom-player" id="player-1" style="display: none;">
                 <div class="player-controls">
                     <button class="play-btn" onclick="togglePlay(1)">▶</button>
@@ -269,12 +253,10 @@
                 <div class="episode-title">פרק 2</div>
                 <a href="audio/פרק 2.mp3" download class="download-btn" id="dl-2" style="display: none;" title="הורד פרק">⬇</a>
             </div>
-            
             <div id="locked-2" class="locked-message">
                 <span>🔒 הפרק נעול</span>
                 <span>נפתח בשעה <span class="time-badge">14:00</span></span>
             </div>
-
             <div class="custom-player" id="player-2" style="display: none;">
                 <div class="player-controls">
                     <button class="play-btn" onclick="togglePlay(2)">▶</button>
@@ -297,12 +279,10 @@
                 <div class="episode-title">פרק 3</div>
                 <a href="audio/פרק 3.mp3" download class="download-btn" id="dl-3" style="display: none;" title="הורד פרק">⬇</a>
             </div>
-            
             <div id="locked-3" class="locked-message">
                 <span>🔒 הפרק נעול</span>
                 <span>נפתח בשעה <span class="time-badge">17:30</span></span>
             </div>
-
             <div class="custom-player" id="player-3" style="display: none;">
                 <div class="player-controls">
                     <button class="play-btn" onclick="togglePlay(3)">▶</button>
@@ -325,11 +305,11 @@
     </div>
 
     <script>
-        // הגדרת שעות היעדים לכל פרק (שעות בלבד: שעה ודקה)
+        // שעות הנעילה המקוריות שביקשת (11:00, 14:00, 17:30)
         const unlockTimes = {
-            1: { hour: 11, minute: 0 },   // 11:00
-            2: { hour: 14, minute: 0 },   // 14:00
-            3: { hour: 17, minute: 30 }   // 17:30
+            1: { hour: 11, minute: 0 },
+            2: { hour: 14, minute: 0 },
+            3: { hour: 17, minute: 30 }
         };
 
         function checkUnlockStatus() {
@@ -342,24 +322,24 @@
                 const target = unlockTimes[i];
                 const targetTimeValue = target.hour * 60 + target.minute;
 
-                // בדיקה האם הגענו לשעה או עברנו אותה
+                // אם הגענו או עברנו את השעה, פותחים לצמיתות
                 if (currentTimeValue >= targetTimeValue) {
-                    // שמירה בלוקל סטורג' כדי שברגע שזה נפתח פעם אחת - זה לעולם לא ייסגרא יותר
                     localStorage.setItem(`unlocked_${i}`, 'true');
                 }
 
-                // אם הפרק שוחרר (או בזיכרון או לפי השעה הנוכחית)
                 if (localStorage.getItem(`unlocked_${i}`) === 'true') {
                     document.getElementById(`locked-${i}`).style.display = 'none';
                     document.getElementById(`player-${i}`).style.display = 'flex';
                     document.getElementById(`dl-${i}`).style.display = 'flex';
+                } else {
+                    document.getElementById(`locked-${i}`).style.display = 'flex';
+                    document.getElementById(`player-${i}`).style.display = 'none';
+                    document.getElementById(`dl-${i}`).style.display = 'none';
                 }
             }
         }
 
-        // בדיקה מיד כשהדף עולה
         checkUnlockStatus();
-        // בדיקה כל 10 שניות ליתר ביטחון
         setInterval(checkUnlockStatus, 10000);
 
         function formatTime(seconds) {
