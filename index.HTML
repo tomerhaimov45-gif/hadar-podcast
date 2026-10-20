@@ -229,7 +229,7 @@
             </div>
             <div id="locked-1" class="locked-message">
                 <span>🔒 הפרק נעול</span>
-                <span>נפתח בשעה <span class="time-badge">23:00</span></span>
+                <span>נפתח בשעה <span class="time-badge">11:00</span></span>
             </div>
             <div class="custom-player" id="player-1" style="display: none;">
                 <div class="player-controls">
@@ -255,7 +255,7 @@
             </div>
             <div id="locked-2" class="locked-message">
                 <span>🔒 הפרק נעול</span>
-                <span>נפתח בשעה <span class="time-badge">23:30</span></span>
+                <span>נפתח בשעה <span class="time-badge">14:00</span></span>
             </div>
             <div class="custom-player" id="player-2" style="display: none;">
                 <div class="player-controls">
@@ -281,7 +281,7 @@
             </div>
             <div id="locked-3" class="locked-message">
                 <span>🔒 הפרק נעול</span>
-                <span>נפתח בשעה <span class="time-badge">23:59</span></span>
+                <span>נפתח בשעה <span class="time-badge">17:30</span></span>
             </div>
             <div class="custom-player" id="player-3" style="display: none;">
                 <div class="player-controls">
@@ -305,11 +305,11 @@
     </div>
 
     <script>
-        // שעות לבדיקה עכשיו (שעות שעוד לא הגיעו הלילה)
+        // שעות הנעילה הסופיות
         const unlockTimes = {
-            1: { hour: 23, minute: 0 },
-            2: { hour: 23, minute: 30 },
-            3: { hour: 23, minute: 59 }
+            1: { hour: 11, minute: 0 },
+            2: { hour: 14, minute: 0 },
+            3: { hour: 17, minute: 30 }
         };
 
         function checkUnlockStatus() {
