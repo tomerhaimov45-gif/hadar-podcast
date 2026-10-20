@@ -183,8 +183,7 @@
             width: 0%;
             border-radius: 5px;
             box-shadow: 0 0 8px var(--accent-purple-glow);
-            /* תיקון: מאפשר ללחיצה לעבור דרכו ישירות לפס */
-            pointer-events: none; 
+            /* הסרנו את ה-pointer-events כדי שהלחיצה תעבוד בצורה חלקה וישירה */
         }
 
         .time-info {
@@ -350,23 +349,15 @@
             playBtn.textContent = '▶';
         }
 
-        // תיקון חישוב המיקום של הלחיצה עבור עברית (RTL)
+        // פונקציית לחיצה פשוטה ומדויקת על הפס
         function seekAudio(event, id) {
             const audio = document.getElementById(`audio-${id}`);
             const progressBar = event.currentTarget;
-            const rect = progressBar.getBoundingClientRect();
-            
-            // חישוב המרחק מימין בגלל שהאתר מימין לשמאל
-            const clickX = event.clientX - rect.left;
             const width = progressBar.clientWidth;
+            const clickX = event.offsetX;
             
-            let percentage = clickX / width;
-            // וידוא שהאחוזים בין 0 ל-1
-            if (percentage < 0) percentage = 0;
-            if (percentage > 1) percentage = 1;
-
             if (audio.duration) {
-                audio.currentTime = percentage * audio.duration;
+                audio.currentTime = (clickX / width) * audio.duration;
             }
         }
     </script>
