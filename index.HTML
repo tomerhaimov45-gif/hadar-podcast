@@ -56,12 +56,6 @@
             text-align: right;
             border: 1px solid var(--card-border);
             box-shadow: 0 8px 24px rgba(0,0,0,0.4);
-            transition: border-color 0.3s, box-shadow 0.3s;
-        }
-
-        .episode-card:hover {
-            border-color: var(--card-border-hover);
-            box-shadow: 0 8px 30px var(--accent-purple-glow);
         }
 
         .episode-header {
@@ -77,31 +71,24 @@
             color: var(--text-main);
         }
 
-        /* תיקון עיצוב כפתור הורדה בנייד ובדפדפנים שונים */
+        /* ניקוי מלא של העיצוב המובנה באייפון לכפתור הורדה */
         .download-btn {
             -webkit-appearance: none;
+            -moz-appearance: none;
             appearance: none;
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
             color: var(--text-muted);
             width: 32px;
             height: 32px;
-            border-radius: 50%;
+            border-radius: 50% !important;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             text-decoration: none;
             font-size: 14px;
-            box-sizing: border-box;
-            transition: all 0.2s ease;
-        }
-
-        .download-btn:hover {
-            background: var(--accent-purple);
-            color: white;
-            border-color: var(--accent-purple);
-            box-shadow: 0 0 10px var(--accent-purple-glow);
+            outline: none;
         }
 
         .custom-player {
@@ -121,52 +108,43 @@
             flex-shrink: 0;
         }
 
+        /* ניקוי מלא של העיצוב המובנה באייפון לכפתור פליי */
         .play-btn {
             -webkit-appearance: none;
+            -moz-appearance: none;
             appearance: none;
             background: linear-gradient(135deg, #b060f0, var(--accent-purple));
             color: white;
             border: none;
             width: 40px;
             height: 40px;
-            border-radius: 50%;
+            border-radius: 50% !important;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 15px;
             box-shadow: 0 4px 15px var(--accent-purple-glow);
-            box-sizing: border-box;
-            transition: transform 0.2s, box-shadow 0.2s;
+            outline: none;
         }
 
-        .play-btn:hover {
-            transform: scale(1.08);
-            box-shadow: 0 6px 20px var(--accent-purple-glow);
-        }
-
-        /* תיקון עיצוב כפתור עצירה בנייד */
+        /* ניקוי מלא של העיצוב המובנה באייפון לכפתור עצירה/איפוס */
         .stop-btn {
             -webkit-appearance: none;
+            -moz-appearance: none;
             appearance: none;
             background: rgba(255, 255, 255, 0.06);
             color: var(--text-muted);
             border: 1px solid rgba(255, 255, 255, 0.1);
             width: 32px;
             height: 32px;
-            border-radius: 50%;
+            border-radius: 50% !important;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 11px;
-            box-sizing: border-box;
-            transition: all 0.2s;
-        }
-
-        .stop-btn:hover {
-            background: rgba(255, 255, 255, 0.15);
-            color: white;
+            outline: none;
         }
 
         .progress-container {
@@ -180,6 +158,7 @@
             width: 100%;
             height: 8px;
             -webkit-appearance: none;
+            appearance: none;
             background: #22222f;
             border-radius: 4px;
             outline: none;
@@ -194,11 +173,6 @@
             background: var(--accent-purple);
             box-shadow: 0 0 8px var(--accent-purple-glow);
             cursor: pointer;
-            transition: transform 0.1s;
-        }
-
-        .seek-slider::-webkit-slider-thumb:hover {
-            transform: scale(1.2);
         }
 
         .time-info {
