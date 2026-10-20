@@ -165,25 +165,30 @@
             gap: 6px;
         }
 
-        .progress-bar {
+        /* סליידר מקצועי שזז בקלות בלחיצה וגרירה */
+        .seek-slider {
             width: 100%;
-            height: 10px;
-            background-color: #22222f;
-            border-radius: 5px;
+            height: 8px;
+            -webkit-appearance: none;
+            background: #22222f;
+            border-radius: 4px;
+            outline: none;
             cursor: pointer;
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
         }
 
-        .progress-filled {
-            height: 100%;
-            background: linear-gradient(90deg, var(--accent-purple), #d480ff);
-            width: 0%;
-            border-radius: 5px;
+        .seek-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--accent-purple);
             box-shadow: 0 0 8px var(--accent-purple-glow);
-            /* הסרנו את ה-pointer-events כדי שהלחיצה תעבוד בצורה חלקה וישירה */
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+
+        .seek-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
         }
 
         .time-info {
@@ -223,9 +228,7 @@
                     <button class="stop-btn" onclick="resetAudio(1)" title="חזור להתחלה">⏹</button>
                 </div>
                 <div class="progress-container">
-                    <div class="progress-bar" onclick="seekAudio(event, 1)">
-                        <div class="progress-filled" id="progress-1"></div>
-                    </div>
+                    <input type="range" min="0" max="100" value="0" class="seek-slider" id="seek-1" oninput="seekAudio(1)">
                     <div class="time-info">
                         <span id="current-time-1">0:00</span>
                         <span id="duration-1">0:00</span>
@@ -247,9 +250,7 @@
                     <button class="stop-btn" onclick="resetAudio(2)" title="חזור להתחלה">⏹</button>
                 </div>
                 <div class="progress-container">
-                    <div class="progress-bar" onclick="seekAudio(event, 2)">
-                        <div class="progress-filled" id="progress-2"></div>
-                    </div>
+                    <input type="range" min="0" max="100" value="0" class="seek-slider" id="seek-2" oninput="seekAudio(2)">
                     <div class="time-info">
                         <span id="current-time-2">0:00</span>
                         <span id="duration-2">0:00</span>
@@ -271,9 +272,7 @@
                     <button class="stop-btn" onclick="resetAudio(3)" title="חזור להתחלה">⏹</button>
                 </div>
                 <div class="progress-container">
-                    <div class="progress-bar" onclick="seekAudio(event, 3)">
-                        <div class="progress-filled" id="progress-3"></div>
-                    </div>
+                    <input type="range" min="0" max="100" value="0" class="seek-slider" id="seek-3" oninput="seekAudio(3)">
                     <div class="time-info">
                         <span id="current-time-3">0:00</span>
                         <span id="duration-3">0:00</span>
@@ -297,7 +296,7 @@
 
         for (let i = 1; i <= 3; i++) {
             const audio = document.getElementById(`audio-${i}`);
-            const progressFilled = document.getElementById(`progress-${i}`);
+            const seekSlider = document.getElementById(`seek-${i}`);
             const currentTimeEl = document.getElementById(`current-time-${i}`);
             const durationEl = document.getElementById(`duration-${i}`);
 
@@ -306,9 +305,9 @@
             });
 
             audio.addEventListener('timeupdate', () => {
-                if (audio.duration) {
+                if (audio.duration && !audio.seeking) {
                     const percent = (audio.currentTime / audio.duration) * 100;
-                    progressFilled.style.width = `${percent}%`;
+                    seekSlider.value = percent;
                     currentTimeEl.textContent = formatTime(audio.currentTime);
                 }
             });
@@ -343,21 +342,19 @@
 
         function resetAudio(id) {
             const audio = document.getElementById(`audio-${id}`);
+            const seekSlider = document.getElementById(`seek-${id}`);
             const playBtn = document.querySelector(`#ep${id} .play-btn`);
             audio.pause();
             audio.currentTime = 0;
+            seekSlider.value = 0;
             playBtn.textContent = '▶';
         }
 
-        // פונקציית לחיצה פשוטה ומדויקת על הפס
-        function seekAudio(event, id) {
+        function seekAudio(id) {
             const audio = document.getElementById(`audio-${id}`);
-            const progressBar = event.currentTarget;
-            const width = progressBar.clientWidth;
-            const clickX = event.offsetX;
-            
+            const seekSlider = document.getElementById(`seek-${id}`);
             if (audio.duration) {
-                audio.currentTime = (clickX / width) * audio.duration;
+                audio.currentTime = (seekSlider.value / 100) * audio.duration;
             }
         }
     </script>
