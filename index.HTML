@@ -56,6 +56,12 @@
             text-align: right;
             border: 1px solid var(--card-border);
             box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .episode-card:hover {
+            border-color: var(--card-border-hover);
+            box-shadow: 0 8px 30px var(--accent-purple-glow);
         }
 
         .episode-header {
@@ -71,7 +77,6 @@
             color: var(--text-main);
         }
 
-        /* ניקוי מלא של העיצוב המובנה באייפון לכפתור הורדה */
         .download-btn {
             -webkit-appearance: none;
             -moz-appearance: none;
@@ -89,6 +94,36 @@
             text-decoration: none;
             font-size: 14px;
             outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .download-btn:hover {
+            background: var(--accent-purple);
+            color: white;
+            border-color: var(--accent-purple);
+            box-shadow: 0 0 10px var(--accent-purple-glow);
+        }
+
+        /* עיצוב אזור הנעילה היפהפה */
+        .locked-message {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px dashed rgba(155, 77, 202, 0.4);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 14px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .locked-message span.time-badge {
+            color: #d480ff;
+            font-weight: 700;
+            font-size: 16px;
+            letter-spacing: 0.5px;
         }
 
         .custom-player {
@@ -108,7 +143,6 @@
             flex-shrink: 0;
         }
 
-        /* ניקוי מלא של העיצוב המובנה באייפון לכפתור פליי */
         .play-btn {
             -webkit-appearance: none;
             -moz-appearance: none;
@@ -128,7 +162,6 @@
             outline: none;
         }
 
-        /* ניקוי מלא של העיצוב המובנה באייפון לכפתור עצירה/איפוס */
         .stop-btn {
             -webkit-appearance: none;
             -moz-appearance: none;
@@ -204,9 +237,17 @@
         <div class="episode-card" id="ep1">
             <div class="episode-header">
                 <div class="episode-title">פרק 1</div>
-                <a href="audio/פרק 1.mp3" download class="download-btn" title="הורד פרק">⬇</a>
+                <a href="audio/פרק 1.mp3" download class="download-btn" id="dl-1" style="display: none;" title="הורד פרק">⬇</a>
             </div>
-            <div class="custom-player">
+            
+            <!-- הודעת נעילה -->
+            <div id="locked-1" class="locked-message">
+                <span>🔒 הפרק נעול</span>
+                <span>נפתח בשעה <span class="time-badge">11:00</span></span>
+            </div>
+
+            <!-- נגן (מוסתר בהתחלה) -->
+            <div class="custom-player" id="player-1" style="display: none;">
                 <div class="player-controls">
                     <button class="play-btn" onclick="togglePlay(1)">▶</button>
                     <button class="stop-btn" onclick="resetAudio(1)" title="חזור להתחלה">⏹</button>
@@ -226,9 +267,15 @@
         <div class="episode-card" id="ep2">
             <div class="episode-header">
                 <div class="episode-title">פרק 2</div>
-                <a href="audio/פרק 2.mp3" download class="download-btn" title="הורד פרק">⬇</a>
+                <a href="audio/פרק 2.mp3" download class="download-btn" id="dl-2" style="display: none;" title="הורד פרק">⬇</a>
             </div>
-            <div class="custom-player">
+            
+            <div id="locked-2" class="locked-message">
+                <span>🔒 הפרק נעול</span>
+                <span>נפתח בשעה <span class="time-badge">14:00</span></span>
+            </div>
+
+            <div class="custom-player" id="player-2" style="display: none;">
                 <div class="player-controls">
                     <button class="play-btn" onclick="togglePlay(2)">▶</button>
                     <button class="stop-btn" onclick="resetAudio(2)" title="חזור להתחלה">⏹</button>
@@ -248,9 +295,15 @@
         <div class="episode-card" id="ep3">
             <div class="episode-header">
                 <div class="episode-title">פרק 3</div>
-                <a href="audio/פרק 3.mp3" download class="download-btn" title="הורד פרק">⬇</a>
+                <a href="audio/פרק 3.mp3" download class="download-btn" id="dl-3" style="display: none;" title="הורד פרק">⬇</a>
             </div>
-            <div class="custom-player">
+            
+            <div id="locked-3" class="locked-message">
+                <span>🔒 הפרק נעול</span>
+                <span>נפתח בשעה <span class="time-badge">17:30</span></span>
+            </div>
+
+            <div class="custom-player" id="player-3" style="display: none;">
                 <div class="player-controls">
                     <button class="play-btn" onclick="togglePlay(3)">▶</button>
                     <button class="stop-btn" onclick="resetAudio(3)" title="חזור להתחלה">⏹</button>
@@ -272,6 +325,43 @@
     </div>
 
     <script>
+        // הגדרת שעות היעדים לכל פרק (שעות בלבד: שעה ודקה)
+        const unlockTimes = {
+            1: { hour: 11, minute: 0 },   // 11:00
+            2: { hour: 14, minute: 0 },   // 14:00
+            3: { hour: 17, minute: 30 }   // 17:30
+        };
+
+        function checkUnlockStatus() {
+            const now = new Date();
+            const currentHour = now.getHours();
+            const currentMinute = now.getMinutes();
+            const currentTimeValue = currentHour * 60 + currentMinute;
+
+            for (let i = 1; i <= 3; i++) {
+                const target = unlockTimes[i];
+                const targetTimeValue = target.hour * 60 + target.minute;
+
+                // בדיקה האם הגענו לשעה או עברנו אותה
+                if (currentTimeValue >= targetTimeValue) {
+                    // שמירה בלוקל סטורג' כדי שברגע שזה נפתח פעם אחת - זה לעולם לא ייסגרא יותר
+                    localStorage.setItem(`unlocked_${i}`, 'true');
+                }
+
+                // אם הפרק שוחרר (או בזיכרון או לפי השעה הנוכחית)
+                if (localStorage.getItem(`unlocked_${i}`) === 'true') {
+                    document.getElementById(`locked-${i}`).style.display = 'none';
+                    document.getElementById(`player-${i}`).style.display = 'flex';
+                    document.getElementById(`dl-${i}`).style.display = 'flex';
+                }
+            }
+        }
+
+        // בדיקה מיד כשהדף עולה
+        checkUnlockStatus();
+        // בדיקה כל 10 שניות ליתר ביטחון
+        setInterval(checkUnlockStatus, 10000);
+
         function formatTime(seconds) {
             const minutes = Math.floor(seconds / 60);
             const remainingSeconds = Math.floor(seconds % 60);
@@ -298,7 +388,7 @@
 
             audio.addEventListener('ended', () => {
                 const playBtn = document.querySelector(`#ep${i} .play-btn`);
-                playBtn.textContent = '▶';
+                if (playBtn) playBtn.textContent = '▶';
             });
         }
 
@@ -310,8 +400,10 @@
                 if (i !== id) {
                     const otherAudio = document.getElementById(`audio-${i}`);
                     const otherBtn = document.querySelector(`#ep${i} .play-btn`);
-                    otherAudio.pause();
-                    otherBtn.textContent = '▶';
+                    if (otherAudio && otherBtn) {
+                        otherAudio.pause();
+                        otherBtn.textContent = '▶';
+                    }
                 }
             }
 
