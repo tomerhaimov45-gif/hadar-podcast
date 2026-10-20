@@ -138,7 +138,6 @@
             box-shadow: 0 6px 20px var(--accent-purple-glow);
         }
 
-        /* כפתור חזרה להתחלה (הריבוע) */
         .stop-btn {
             background: rgba(255, 255, 255, 0.06);
             color: var(--text-muted);
@@ -166,7 +165,6 @@
             gap: 6px;
         }
 
-        /* פס התקדמות עבה ונוח יותר ללחיצה וגרירה */
         .progress-bar {
             width: 100%;
             height: 10px;
@@ -185,7 +183,8 @@
             width: 0%;
             border-radius: 5px;
             box-shadow: 0 0 8px var(--accent-purple-glow);
-            pointer-events: none;
+            /* תיקון: מאפשר ללחיצה לעבור דרכו ישירות לפס */
+            pointer-events: none; 
         }
 
         .time-info {
@@ -301,10 +300,10 @@
             const audio = document.getElementById(`audio-${i}`);
             const progressFilled = document.getElementById(`progress-${i}`);
             const currentTimeEl = document.getElementById(`current-time-${i}`);
-            const durationEl = document.getElementById(`duration-1`); // מתוקן למטה
+            const durationEl = document.getElementById(`duration-${i}`);
 
             audio.addEventListener('loadedmetadata', () => {
-                document.getElementById(`duration-${i}`).textContent = formatTime(audio.duration);
+                durationEl.textContent = formatTime(audio.duration);
             });
 
             audio.addEventListener('timeupdate', () => {
@@ -343,7 +342,6 @@
             }
         }
 
-        // פונקציית חזרה להתחלה (עצירה ואיפוס ל-0)
         function resetAudio(id) {
             const audio = document.getElementById(`audio-${id}`);
             const playBtn = document.querySelector(`#ep${id} .play-btn`);
@@ -352,16 +350,23 @@
             playBtn.textContent = '▶';
         }
 
-        // פונקציית מעבר מדויק וקל יותר בלחיצה על הפס
+        // תיקון חישוב המיקום של הלחיצה עבור עברית (RTL)
         function seekAudio(event, id) {
             const audio = document.getElementById(`audio-${id}`);
             const progressBar = event.currentTarget;
             const rect = progressBar.getBoundingClientRect();
+            
+            // חישוב המרחק מימין בגלל שהאתר מימין לשמאל
             const clickX = event.clientX - rect.left;
             const width = progressBar.clientWidth;
             
+            let percentage = clickX / width;
+            // וידוא שהאחוזים בין 0 ל-1
+            if (percentage < 0) percentage = 0;
+            if (percentage > 1) percentage = 1;
+
             if (audio.duration) {
-                audio.currentTime = (clickX / width) * audio.duration;
+                audio.currentTime = percentage * audio.duration;
             }
         }
     </script>
