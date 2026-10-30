@@ -56,6 +56,12 @@
             text-align: right;
             border: 1px solid var(--card-border);
             box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .episode-card:hover {
+            border-color: var(--card-border-hover);
+            box-shadow: 0 8px 30px var(--accent-purple-glow);
         }
 
         .episode-header {
@@ -87,6 +93,7 @@
             text-decoration: none;
             font-size: 14px;
             outline: none;
+            transition: all 0.2s ease;
         }
 
         .download-btn:hover {
@@ -217,8 +224,31 @@
 <body>
 
     <div class="container">
+        <!-- הלוגו -->
         <div class="logo-container">
             <img src="logo.jpg" alt="חמש דקות של שקט מ-ice" class="logo-img">
+        </div>
+
+        <!-- פרומו (פתוח תמיד) -->
+        <div class="episode-card" id="ep-promo">
+            <div class="episode-header">
+                <div class="episode-title">✨ פרומו / טיזר לחגיגה</div>
+                <a href="audio/פרומו.mp3" download class="download-btn" title="הורד פרומו">⬇</a>
+            </div>
+            <div class="custom-player">
+                <div class="player-controls">
+                    <button class="play-btn" onclick="togglePlay('promo')">▶</button>
+                    <button class="stop-btn" onclick="resetAudio('promo')" title="חזור להתחלה">⏹</button>
+                </div>
+                <div class="progress-container">
+                    <input type="range" min="0" max="100" value="0" class="seek-slider" id="seek-promo" oninput="seekAudio('promo')">
+                    <div class="time-info">
+                        <span id="current-time-promo">0:00</span>
+                        <span id="duration-promo">0:00</span>
+                    </div>
+                </div>
+            </div>
+            <audio id="audio-promo" src="audio/פרומו.mp3" preload="metadata"></audio>
         </div>
 
         <!-- פרק 1 -->
@@ -227,10 +257,12 @@
                 <div class="episode-title">פרק 1</div>
                 <a href="audio/פרק 1.mp3" download class="download-btn" id="dl-1" style="display: none;" title="הורד פרק">⬇</a>
             </div>
+            
             <div id="locked-1" class="locked-message">
                 <span>🔒 הפרק נעול</span>
                 <span>נפתח בשעה <span class="time-badge">11:00</span></span>
             </div>
+
             <div class="custom-player" id="player-1" style="display: none;">
                 <div class="player-controls">
                     <button class="play-btn" onclick="togglePlay(1)">▶</button>
@@ -253,10 +285,12 @@
                 <div class="episode-title">פרק 2</div>
                 <a href="audio/פרק 2.mp3" download class="download-btn" id="dl-2" style="display: none;" title="הורד פרק">⬇</a>
             </div>
+            
             <div id="locked-2" class="locked-message">
                 <span>🔒 הפרק נעול</span>
                 <span>נפתח בשעה <span class="time-badge">14:00</span></span>
             </div>
+
             <div class="custom-player" id="player-2" style="display: none;">
                 <div class="player-controls">
                     <button class="play-btn" onclick="togglePlay(2)">▶</button>
@@ -279,10 +313,12 @@
                 <div class="episode-title">פרק 3</div>
                 <a href="audio/פרק 3.mp3" download class="download-btn" id="dl-3" style="display: none;" title="הורד פרק">⬇</a>
             </div>
+            
             <div id="locked-3" class="locked-message">
                 <span>🔒 הפרק נעול</span>
                 <span>נפתח בשעה <span class="time-badge">17:30</span></span>
             </div>
+
             <div class="custom-player" id="player-3" style="display: none;">
                 <div class="player-controls">
                     <button class="play-btn" onclick="togglePlay(3)">▶</button>
@@ -305,7 +341,7 @@
     </div>
 
     <script>
-        // שעות הנעילה הסופיות
+        // שעות הנעילה הסופיות לפרקים 1, 2 ו-3
         const unlockTimes = {
             1: { hour: 11, minute: 0 },
             2: { hour: 14, minute: 0 },
@@ -330,10 +366,6 @@
                     document.getElementById(`locked-${i}`).style.display = 'none';
                     document.getElementById(`player-${i}`).style.display = 'flex';
                     document.getElementById(`dl-${i}`).style.display = 'flex';
-                } else {
-                    document.getElementById(`locked-${i}`).style.display = 'flex';
-                    document.getElementById(`player-${i}`).style.display = 'none';
-                    document.getElementById(`dl-${i}`).style.display = 'none';
                 }
             }
         }
@@ -347,44 +379,48 @@
             return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
         }
 
-        for (let i = 1; i <= 3; i++) {
-            const audio = document.getElementById(`audio-${i}`);
-            const seekSlider = document.getElementById(`seek-${i}`);
-            const currentTimeEl = document.getElementById(`current-time-${i}`);
-            const durationEl = document.getElementById(`duration-${i}`);
+        // טעינת אירועים לנגנים (כולל הפרומו)
+        const mediaIds = ['promo', 1, 2, 3];
+        mediaIds.forEach(id => {
+            const audio = document.getElementById(`audio-${id}`);
+            const seekSlider = document.getElementById(`seek-${id}`);
+            const currentTimeEl = document.getElementById(`current-time-${id}`);
+            const durationEl = document.getElementById(`duration-${id}`);
 
-            audio.addEventListener('loadedmetadata', () => {
-                durationEl.textContent = formatTime(audio.duration);
-            });
+            if (audio) {
+                audio.addEventListener('loadedmetadata', () => {
+                    durationEl.textContent = formatTime(audio.duration);
+                });
 
-            audio.addEventListener('timeupdate', () => {
-                if (audio.duration && !audio.seeking) {
-                    const percent = (audio.currentTime / audio.duration) * 100;
-                    seekSlider.value = percent;
-                    currentTimeEl.textContent = formatTime(audio.currentTime);
-                }
-            });
+                audio.addEventListener('timeupdate', () => {
+                    if (audio.duration && !audio.seeking) {
+                        const percent = (audio.currentTime / audio.duration) * 100;
+                        seekSlider.value = percent;
+                        currentTimeEl.textContent = formatTime(audio.currentTime);
+                    }
+                });
 
-            audio.addEventListener('ended', () => {
-                const playBtn = document.querySelector(`#ep${i} .play-btn`);
-                if (playBtn) playBtn.textContent = '▶';
-            });
-        }
+                audio.addEventListener('ended', () => {
+                    const playBtn = document.querySelector(`#ep-${id} .play-btn`) || document.querySelector(`#ep${id} .play-btn`);
+                    if (playBtn) playBtn.textContent = '▶';
+                });
+            }
+        });
 
         function togglePlay(id) {
             const audio = document.getElementById(`audio-${id}`);
-            const playBtn = document.querySelector(`#ep${id} .play-btn`);
+            const playBtn = document.querySelector(`#ep-${id} .play-btn`) || document.querySelector(`#ep${id} .play-btn`);
 
-            for (let i = 1; i <= 3; i++) {
-                if (i !== id) {
-                    const otherAudio = document.getElementById(`audio-${i}`);
-                    const otherBtn = document.querySelector(`#ep${i} .play-btn`);
+            mediaIds.forEach(otherId => {
+                if (otherId !== id) {
+                    const otherAudio = document.getElementById(`audio-${otherId}`);
+                    const otherBtn = document.querySelector(`#ep-${otherId} .play-btn`) || document.querySelector(`#ep${otherId} .play-btn`);
                     if (otherAudio && otherBtn) {
                         otherAudio.pause();
                         otherBtn.textContent = '▶';
                     }
                 }
-            }
+            });
 
             if (audio.paused) {
                 audio.play();
@@ -397,8 +433,8 @@
 
         function resetAudio(id) {
             const audio = document.getElementById(`audio-${id}`);
+            const playBtn = document.querySelector(`#ep-${id} .play-btn`) || document.querySelector(`#ep${id} .play-btn`);
             const seekSlider = document.getElementById(`seek-${id}`);
-            const playBtn = document.querySelector(`#ep${id} .play-btn`);
             audio.pause();
             audio.currentTime = 0;
             seekSlider.value = 0;
