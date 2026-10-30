@@ -229,11 +229,11 @@
             <img src="logo.jpg" alt="חמש דקות של שקט מ-ice" class="logo-img">
         </div>
 
-        <!-- פרומו (פתוח תמיד) -->
+        <!-- טיזר לחגיגה (פתוח תמיד) -->
         <div class="episode-card" id="ep-promo">
             <div class="episode-header">
-                <div class="episode-title">✨ פרומו / טיזר לחגיגה</div>
-                <a href="audio/פרומו.mp3" download class="download-btn" title="הורד פרומו">⬇</a>
+                <div class="episode-title">✨ טיזר לחגיגה</div>
+                <a href="audio/פרומו.mp3" download class="download-btn" title="הורד טיזר">⬇</a>
             </div>
             <div class="custom-player">
                 <div class="player-controls">
@@ -254,7 +254,7 @@
         <!-- פרק 1 -->
         <div class="episode-card" id="ep1">
             <div class="episode-header">
-                <div class="episode-title">פרק 1</div>
+                <div class="episode-title">פרק 1 - ☕ הזמן לעצור לנשום</div>
                 <a href="audio/פרק 1.mp3" download class="download-btn" id="dl-1" style="display: none;" title="הורד פרק">⬇</a>
             </div>
             
@@ -282,7 +282,7 @@
         <!-- פרק 2 -->
         <div class="episode-card" id="ep2">
             <div class="episode-header">
-                <div class="episode-title">פרק 2</div>
+                <div class="episode-title">פרק 2 - 🎧 הסודות הקטנים שלנו</div>
                 <a href="audio/פרק 2.mp3" download class="download-btn" id="dl-2" style="display: none;" title="הורד פרק">⬇</a>
             </div>
             
@@ -310,7 +310,7 @@
         <!-- פרק 3 -->
         <div class="episode-card" id="ep3">
             <div class="episode-header">
-                <div class="episode-title">פרק 3</div>
+                <div class="episode-title">פרק 3 - ❤️ הדרך אל הלב</div>
                 <a href="audio/פרק 3.mp3" download class="download-btn" id="dl-3" style="display: none;" title="הורד פרק">⬇</a>
             </div>
             
@@ -341,7 +341,6 @@
     </div>
 
     <script>
-        // שעות הנעילה הסופיות לפרקים 1, 2 ו-3
         const unlockTimes = {
             1: { hour: 11, minute: 0 },
             2: { hour: 14, minute: 0 },
@@ -379,7 +378,6 @@
             return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
         }
 
-        // טעינת אירועים לנגנים (כולל הפרומו)
         const mediaIds = ['promo', 1, 2, 3];
         mediaIds.forEach(id => {
             const audio = document.getElementById(`audio-${id}`);
