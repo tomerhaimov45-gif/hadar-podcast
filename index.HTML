@@ -219,9 +219,143 @@
             font-weight: 500;
             letter-spacing: 0.5px;
         }
+
+        /* עיצוב פופאפ תנאי שימוש חדשני */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(5, 5, 8, 0.88);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 16px;
+        }
+
+        .modal-box {
+            background: var(--card-bg);
+            border: 1px solid var(--accent-purple);
+            border-radius: 20px;
+            padding: 22px;
+            max-width: 400px;
+            width: 100%;
+            text-align: right;
+            box-shadow: 0 16px 50px rgba(155, 77, 202, 0.35);
+            animation: popIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.92); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--text-main);
+            text-align: center;
+        }
+
+        .modal-text {
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .modal-text p {
+            margin: 6px 0;
+        }
+
+        .buttons-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .buttons-row {
+            display: flex;
+            gap: 8px;
+        }
+
+        .modal-btn {
+            -webkit-appearance: none;
+            appearance: none;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-main);
+            border: 1px solid rgba(155, 77, 202, 0.3);
+            padding: 10px 8px;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            flex: 1;
+            text-align: center;
+            outline: none;
+        }
+
+        .modal-btn:hover {
+            background: var(--accent-purple);
+            border-color: var(--accent-purple);
+            box-shadow: 0 0 12px var(--accent-purple-glow);
+        }
+
+        .modal-btn.primary {
+            background: linear-gradient(135deg, #b060f0, var(--accent-purple));
+            border: none;
+            box-shadow: 0 4px 12px var(--accent-purple-glow);
+            flex-basis: 100%;
+        }
+
+        .modal-btn.danger {
+            background: rgba(255, 59, 48, 0.1);
+            border-color: rgba(255, 59, 48, 0.3);
+            color: #ff6b6b;
+            flex-basis: 100%;
+        }
+
+        .modal-btn.danger:hover {
+            background: #ff3b30;
+            color: white;
+            border-color: #ff3b30;
+            box-shadow: 0 0 12px rgba(255, 59, 48, 0.4);
+        }
     </style>
 </head>
 <body>
+
+    <!-- פופאפ תנאי שימוש פורנוגרפי-משפטי -->
+    <div class="modal-overlay" id="welcome-modal">
+        <div class="modal-box">
+            <div class="modal-title">📜 תנאי שימוש והצהרת גישה רשמית</div>
+            <div class="modal-text">
+                <p>🏛️ <strong>הצהרת גיל:</strong> בכניסה למערכת זו ובלחיצה על כפתור ההפעלה, הנך מצהיר ומתחייב כי הינך בגיר (מעל גיל 18 או בעל כשירות משפטית מלאה), וכי הנך הדר הראל היחיד או בר-הסמכא החוקי לצפות ולהאזין לתכנים המצורפים.</p>
+                <p>🎧 <strong>אחריות משתמש:</strong> ההאזנה מותרת באוזניות בלבד. כל האזנה פומבית, רמקול חיצוני או חשיפה לצד ג' נעשית על אחריותו הבלעדית של המאזין.</p>
+                <p>⚠️ <strong>סייג למנהל האתר:</strong> הנהלת האתר (להלן: "בעלך") אינה נושאת באחריות לנזקים נפשיים, דמעות או התרגשות יתר שעלולים להיגרם כתוצאה מהאזנה לתכנים.</p>
+                <p>⚖️ <strong>זכויות יוצרים:</strong> כל הזכויות שמורות להדר הראל. השירים מוגנים תחת סעיף 27א לחוק זכויות יוצרים (או סתם כי מותר לנו כי זה פודקאסט יום הולדת).</p>
+            </div>
+            <div class="buttons-grid">
+                <!-- שורה ראשונה: שלושה כפתורי אישור באותה שורה -->
+                <div class="buttons-row">
+                    <button class="modal-btn" onclick="closeModal()">אני מאשר</button>
+                    <button class="modal-btn" onclick="closeModal()">באמא שלך תומר? מאשר</button>
+                    <button class="modal-btn" onclick="closeModal()">תומר חופר, מאשר</button>
+                </div>
+                <!-- שורה שנייה: כפתור ראשי אחד מרכזי -->
+                <button class="modal-btn primary" onclick="closeModal()">אני מאשר את כל התנאים, תן להאזין</button>
+                <!-- שורה שלישית: כפתור שלילי שסוגר את האתר -->
+                <button class="modal-btn danger" onclick="rejectAccess()">אני מתחת לגיל 18</button>
+            </div>
+        </div>
+    </div>
 
     <div class="container">
         <!-- הלוגו -->
@@ -254,7 +388,7 @@
         <!-- פרק 1 -->
         <div class="episode-card" id="ep1">
             <div class="episode-header">
-                <div class="episode-title">☕ פרק 1 - הזמן לעצור לנשום</div>
+                <div class="episode-title">פרק 1 - ☕ הזמן לעצור לנשום</div>
                 <a href="audio/פרק 1.mp3" download class="download-btn" id="dl-1" style="display: none;" title="הורד פרק">⬇</a>
             </div>
             
@@ -282,7 +416,7 @@
         <!-- פרק 2 -->
         <div class="episode-card" id="ep2">
             <div class="episode-header">
-                <div class="episode-title">🎧 פרק 2 - הסודות הקטנים שלנו</div>
+                <div class="episode-title">פרק 2 - 🎧 הסודות הקטנים שלנו</div>
                 <a href="audio/פרק 2.mp3" download class="download-btn" id="dl-2" style="display: none;" title="הורד פרק">⬇</a>
             </div>
             
@@ -310,7 +444,7 @@
         <!-- פרק 3 -->
         <div class="episode-card" id="ep3">
             <div class="episode-header">
-                <div class="episode-title">❤️ פרק 3 - הדרך אל הלב</div>
+                <div class="episode-title">פרק 3 - ❤️ הסוף הטוב</div>
                 <a href="audio/פרק 3.mp3" download class="download-btn" id="dl-3" style="display: none;" title="הורד פרק">⬇</a>
             </div>
             
@@ -341,6 +475,14 @@
     </div>
 
     <script>
+        function closeModal() {
+            document.getElementById('welcome-modal').style.display = 'none';
+        }
+
+        function rejectAccess() {
+            document.body.innerHTML = '<div style="display: flex; justify-content: center; align-items: center; height: 100vh; background: #0b0b0f; color: white; font-family: sans-serif; text-align: center; padding: 20px;"><h2>חזור לכאן כשתגדל. נסגר האתר. 😈</h2></div>';
+        }
+
         const unlockTimes = {
             1: { hour: 11, minute: 0 },
             2: { hour: 14, minute: 0 },
