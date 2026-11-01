@@ -220,34 +220,35 @@
             letter-spacing: 0.5px;
         }
 
-        /* עיצוב פופאפ מותאם למובייל */
+        /* עיצוב פופאפ מתקדם שמונע חיתוך ויזואלי */
         .modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(5, 5, 8, 0.9);
+            background: rgba(5, 5, 8, 0.92);
             backdrop-filter: blur(10px);
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 1000;
-            padding: 12px;
+            padding: 16px;
         }
 
         .modal-box {
             background: var(--card-bg);
-            border: 1px solid var(--accent-purple);
-            border-radius: 20px;
-            padding: 18px;
-            max-width: 400px;
+            border: 1.5px solid var(--accent-purple);
+            border-radius: 24px;
+            padding: 24px 20px;
+            max-width: 440px;
             width: 100%;
             text-align: right;
-            box-shadow: 0 16px 50px rgba(155, 77, 202, 0.35);
+            box-shadow: 0 20px 60px rgba(155, 77, 202, 0.4);
             animation: popIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            max-height: 92vh;
-            overflow-y: auto;
+            max-height: 88vh;
+            display: flex;
+            flex-direction: column;
         }
 
         @keyframes popIn {
@@ -256,53 +257,66 @@
         }
 
         .modal-title {
-            font-size: 16px;
+            font-size: 18px;
             font-weight: 700;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             color: var(--text-main);
             text-align: center;
+            flex-shrink: 0;
         }
 
+        /* אזור טקסט עם גלילה נקייה בתוך המסגרת */
         .modal-text {
-            font-size: 11px;
+            font-size: 12px;
             color: var(--text-muted);
-            line-height: 1.4;
+            line-height: 1.5;
             margin-bottom: 16px;
+            overflow-y: auto;
+            flex-grow: 1;
+            padding-left: 4px;
+        }
+
+        .modal-text::-webkit-scrollbar {
+            width: 4px;
+        }
+        .modal-text::-webkit-scrollbar-thumb {
+            background: var(--accent-purple);
+            border-radius: 4px;
         }
 
         .modal-text p {
-            margin: 5px 0;
+            margin: 8px 0;
         }
 
         .buttons-grid {
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 8px;
+            flex-shrink: 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding-top: 14px;
         }
 
         .buttons-row {
             display: flex;
-            gap: 5px;
+            gap: 6px;
         }
 
         .modal-btn {
             -webkit-appearance: none;
             appearance: none;
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.06);
             color: var(--text-main);
             border: 1px solid rgba(155, 77, 202, 0.3);
-            padding: 8px 4px;
-            border-radius: 8px;
-            font-size: 10.5px;
+            padding: 9px 6px;
+            border-radius: 10px;
+            font-size: 11px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s ease;
             flex: 1;
             text-align: center;
             outline: none;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
         }
 
         .modal-btn:hover {
@@ -314,20 +328,17 @@
         .modal-btn.primary {
             background: linear-gradient(135deg, #b060f0, var(--accent-purple));
             border: none;
-            box-shadow: 0 4px 12px var(--accent-purple-glow);
-            flex-basis: 100%;
-            font-size: 12px;
-            padding: 10px;
-            white-space: normal;
+            box-shadow: 0 4px 15px var(--accent-purple-glow);
+            font-size: 13px;
+            padding: 12px;
         }
 
         .modal-btn.danger {
             background: rgba(255, 59, 48, 0.1);
             border-color: rgba(255, 59, 48, 0.3);
             color: #ff6b6b;
-            flex-basis: 100%;
-            font-size: 11.5px;
-            padding: 9px;
+            font-size: 12px;
+            padding: 10px;
         }
 
         .modal-btn.danger:hover {
@@ -340,7 +351,7 @@
 </head>
 <body>
 
-    <!-- פופאפ תנאי שימוש פורנוגרפי-משפטי מותאם למובייל -->
+    <!-- פופאפ תנאי שימוש מעוצב עם גלילה ורוחב מורחב -->
     <div class="modal-overlay" id="welcome-modal">
         <div class="modal-box">
             <div class="modal-title">📜 תנאי שימוש והצהרת גישה רשמית</div>
@@ -348,18 +359,18 @@
                 <p>🏛️ <strong>הצהרת גיל:</strong> בכניסה למערכת זו ובלחיצה על כפתור ההפעלה, הנך מצהיר ומתחייב כי הינך בגיר (מעל גיל 18 או בעל כשירות משפטית מלאה), וכי הנך הדר הראל היחיד או בר-הסמכא החוקי לצפות ולהאזין לתכנים המצורפים.</p>
                 <p>🎧 <strong>אחריות משתמש:</strong> ההאזנה מותרת באוזניות בלבד. כל האזנה פומבית, רמקול חיצוני או חשיפה לצד ג' נעשית על אחריותו הבלעדית של המאזין.</p>
                 <p>⚠️ <strong>סייג למנהל האתר:</strong> הנהלת האתר (להלן: "בעלך") אינה נושאת באחריות לנזקים נפשיים, דמעות או התרגשות יתר שעלולים להיגרם כתוצאה מהאזנה לתכנים.</p>
-                <p>⚖️ <strong>זכויות יוצרים:</strong> כל הזכויות שמורות להדר הראל. השירים מוגנים תחת סעיף 27א לחוק זכויות יוצרים (או סתם כי מותר לנו כי זה פודקאסט יום הולדת).</p>
+                <p>⚖️ <strong>זכויות יוצרים וקניין רוחני:</strong> כל הזכויות על התכנים, הקול, ההשקעה והלב שפוזרו פה שמורות אך ורק להדר הראל. כל העתקה, הפצה או ניסיון להתחמק מהתרגשות יגררו סנקציות חמורות. השירים והיצירות המשולבות בתוכנית הינם זכותם המלאה של המבצעים והאמנים המקוריים. השימוש נעשה בתום לב, ללא שום מטרה מסחרית או רווח כלכלי, ומוגן תחת סעיף 27א לחוק זכויות יוצרים (או סתם כי מותר לנו כי זה פודקאסט יום הולדת).</p>
             </div>
             <div class="buttons-grid">
-                <!-- שורה ראשונה: שלושה כפתורי אישור באותה שורה -->
+                <!-- שורה ראשונה: שלושה כפתורי אישור -->
                 <div class="buttons-row">
                     <button class="modal-btn" onclick="closeModal()">אני מאשר</button>
                     <button class="modal-btn" onclick="closeModal()">באמא שלך תומר?</button>
                     <button class="modal-btn" onclick="closeModal()">תומר חופר, מאשר</button>
                 </div>
-                <!-- שורה שנייה: כפתור ראשי אחד מרכזי -->
+                <!-- שורה שנייה: כפתור אישור מרכזי -->
                 <button class="modal-btn primary" onclick="closeModal()">אני מאשר את כל התנאים, תן להאזין</button>
-                <!-- שורה שלישית: כפתור שלילי שסוגר את האתר -->
+                <!-- שורה שלישית: כפתור סגירה -->
                 <button class="modal-btn danger" onclick="rejectAccess()">אני מתחת לגיל 18</button>
             </div>
         </div>
@@ -562,7 +573,7 @@
             mediaIds.forEach(otherId => {
                 if (otherId !== id) {
                     const otherAudio = document.getElementById(`audio-${otherId}`);
-                    const otherBtn = document.querySelector(`#ep-${otherId} .play-btn`) || document.querySelector(`#ep${id} .play-btn`);
+                    const otherBtn = document.querySelector(`#ep-${otherId} .play-btn`) || document.querySelector(`#ep${otherId} .play-btn`);
                     if (otherAudio && otherBtn) {
                         otherAudio.pause();
                         otherBtn.textContent = '▶';
