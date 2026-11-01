@@ -220,7 +220,7 @@
             letter-spacing: 0.5px;
         }
 
-        /* עיצוב פופאפ מתקדם שמונע חיתוך ויזואלי */
+        /* תיקון מלא ומושלם למסגרת הפופאפ בדסקטופ ובמובייל */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -233,7 +233,8 @@
             align-items: center;
             justify-content: center;
             z-index: 1000;
-            padding: 16px;
+            padding: 20px;
+            box-sizing: border-box;
         }
 
         .modal-box {
@@ -241,14 +242,15 @@
             border: 1.5px solid var(--accent-purple);
             border-radius: 24px;
             padding: 24px 20px;
-            max-width: 440px;
             width: 100%;
+            max-width: 480px;
             text-align: right;
             box-shadow: 0 20px 60px rgba(155, 77, 202, 0.4);
             animation: popIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            max-height: 88vh;
+            max-height: 85vh;
             display: flex;
             flex-direction: column;
+            box-sizing: border-box;
         }
 
         @keyframes popIn {
@@ -265,15 +267,14 @@
             flex-shrink: 0;
         }
 
-        /* אזור טקסט עם גלילה נקייה בתוך המסגרת */
         .modal-text {
-            font-size: 12px;
+            font-size: 13px;
             color: var(--text-muted);
             line-height: 1.5;
             margin-bottom: 16px;
             overflow-y: auto;
             flex-grow: 1;
-            padding-left: 4px;
+            padding-left: 6px;
         }
 
         .modal-text::-webkit-scrollbar {
@@ -308,9 +309,9 @@
             background: rgba(255, 255, 255, 0.06);
             color: var(--text-main);
             border: 1px solid rgba(155, 77, 202, 0.3);
-            padding: 9px 6px;
+            padding: 10px 6px;
             border-radius: 10px;
-            font-size: 11px;
+            font-size: 11.5px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s ease;
@@ -351,7 +352,7 @@
 </head>
 <body>
 
-    <!-- פופאפ תנאי שימוש מעוצב עם גלילה ורוחב מורחב -->
+    <!-- פופאפ תנאי שימוש מתוקן לחלוטין לדסקטופ ולמובייל -->
     <div class="modal-overlay" id="welcome-modal">
         <div class="modal-box">
             <div class="modal-title">📜 תנאי שימוש והצהרת גישה רשמית</div>
@@ -565,6 +566,15 @@
                 });
             }
         });
+
+        (function() {
+            const playBtn = document.querySelector(`#ep-promo .play-btn`);
+            if (playBtn) {
+                const audio = document.getElementById(`audio-promo`);
+                audio.addEventListener('play', () => playBtn.textContent = '⏸');
+                audio.addEventListener('pause', () => playBtn.textContent = '▶');
+            }
+        })();
 
         function togglePlay(id) {
             const audio = document.getElementById(`audio-${id}`);
