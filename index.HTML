@@ -220,33 +220,33 @@
             letter-spacing: 0.5px;
         }
 
-        /* עיצוב פופאפ תנאי שימוש חדשני */
+        /* עיצוב פופאפ מותאם למובייל */
         .modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(5, 5, 8, 0.88);
+            background: rgba(5, 5, 8, 0.9);
             backdrop-filter: blur(10px);
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 1000;
-            padding: 16px;
+            padding: 12px;
         }
 
         .modal-box {
             background: var(--card-bg);
             border: 1px solid var(--accent-purple);
             border-radius: 20px;
-            padding: 22px;
+            padding: 18px;
             max-width: 400px;
             width: 100%;
             text-align: right;
             box-shadow: 0 16px 50px rgba(155, 77, 202, 0.35);
             animation: popIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            max-height: 90vh;
+            max-height: 92vh;
             overflow-y: auto;
         }
 
@@ -256,33 +256,33 @@
         }
 
         .modal-title {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 700;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             color: var(--text-main);
             text-align: center;
         }
 
         .modal-text {
-            font-size: 12px;
+            font-size: 11px;
             color: var(--text-muted);
-            line-height: 1.5;
-            margin-bottom: 20px;
+            line-height: 1.4;
+            margin-bottom: 16px;
         }
 
         .modal-text p {
-            margin: 6px 0;
+            margin: 5px 0;
         }
 
         .buttons-grid {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 6px;
         }
 
         .buttons-row {
             display: flex;
-            gap: 8px;
+            gap: 5px;
         }
 
         .modal-btn {
@@ -291,15 +291,18 @@
             background: rgba(255, 255, 255, 0.05);
             color: var(--text-main);
             border: 1px solid rgba(155, 77, 202, 0.3);
-            padding: 10px 8px;
-            border-radius: 10px;
-            font-size: 12px;
+            padding: 8px 4px;
+            border-radius: 8px;
+            font-size: 10.5px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s ease;
             flex: 1;
             text-align: center;
             outline: none;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .modal-btn:hover {
@@ -313,6 +316,9 @@
             border: none;
             box-shadow: 0 4px 12px var(--accent-purple-glow);
             flex-basis: 100%;
+            font-size: 12px;
+            padding: 10px;
+            white-space: normal;
         }
 
         .modal-btn.danger {
@@ -320,6 +326,8 @@
             border-color: rgba(255, 59, 48, 0.3);
             color: #ff6b6b;
             flex-basis: 100%;
+            font-size: 11.5px;
+            padding: 9px;
         }
 
         .modal-btn.danger:hover {
@@ -332,7 +340,7 @@
 </head>
 <body>
 
-    <!-- פופאפ תנאי שימוש פורנוגרפי-משפטי -->
+    <!-- פופאפ תנאי שימוש פורנוגרפי-משפטי מותאם למובייל -->
     <div class="modal-overlay" id="welcome-modal">
         <div class="modal-box">
             <div class="modal-title">📜 תנאי שימוש והצהרת גישה רשמית</div>
@@ -346,7 +354,7 @@
                 <!-- שורה ראשונה: שלושה כפתורי אישור באותה שורה -->
                 <div class="buttons-row">
                     <button class="modal-btn" onclick="closeModal()">אני מאשר</button>
-                    <button class="modal-btn" onclick="closeModal()">באמא שלך תומר? מאשר</button>
+                    <button class="modal-btn" onclick="closeModal()">באמא שלך תומר?</button>
                     <button class="modal-btn" onclick="closeModal()">תומר חופר, מאשר</button>
                 </div>
                 <!-- שורה שנייה: כפתור ראשי אחד מרכזי -->
@@ -554,7 +562,7 @@
             mediaIds.forEach(otherId => {
                 if (otherId !== id) {
                     const otherAudio = document.getElementById(`audio-${otherId}`);
-                    const otherBtn = document.querySelector(`#ep-${otherId} .play-btn`) || document.querySelector(`#ep${otherId} .play-btn`);
+                    const otherBtn = document.querySelector(`#ep-${otherId} .play-btn`) || document.querySelector(`#ep${id} .play-btn`);
                     if (otherAudio && otherBtn) {
                         otherAudio.pause();
                         otherBtn.textContent = '▶';
